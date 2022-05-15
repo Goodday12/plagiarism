@@ -1,5 +1,8 @@
 package com.master.plagiarism;
 
+import com.master.plagiarism.model.PlagiarismCheckerOutput;
+import com.master.plagiarism.model.SourceCodeCompareEntity;
+import com.master.plagiarism.service.utils.similirityFinder.SimilarityFinder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -15,8 +18,8 @@ public class PlagiarismApplication {
 	}
 
 	@Bean
-	public Function<Flux<String>, Flux<String>> uppercase() {
-		return flux -> flux.map(String::toUpperCase);
-	}git
+	public Function<Flux<SourceCodeCompareEntity>, Flux<PlagiarismCheckerOutput>> checkPlagiarism(){
+		return sourceCodeCompareEntityFlux -> sourceCodeCompareEntityFlux.map(SimilarityFinder.getInstance()::findSimilarity);
+	}
 
 }
